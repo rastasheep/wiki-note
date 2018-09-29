@@ -15,5 +15,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'index.html.ejs'),
     }),
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  }
 };

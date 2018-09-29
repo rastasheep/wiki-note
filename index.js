@@ -1,3 +1,7 @@
+import Quill from 'quill';
+
+import 'quill/dist/quill.bubble.css';
+
 const Link = Quill.import('formats/link');
 
 class CustomLink extends Link {
