@@ -1,5 +1,5 @@
 import Quill from 'quill';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 
 import AutoLink from './modules/auto-link';
 import ClickableLinks from './modules/clickable-links';

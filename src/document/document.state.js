@@ -1,6 +1,6 @@
 import { ReplaySubject, pipe } from 'rxjs';
 import { scan, map, distinctUntilChanged, shareReplay, tap } from 'rxjs/operators';
-import { get, isEqual } from 'lodash';
+import { get, isEqual } from 'lodash-es';
 
 export class Action {
   constructor(type, payload) {
