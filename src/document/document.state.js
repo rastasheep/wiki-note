@@ -13,9 +13,9 @@ export class DocumentState {
   constructor() {
     this.actions = new ReplaySubject();
     this.state = this.actions.pipe(
-      tap(_ => console.log('executed')),
+      tap(console.log), // TODO: remove me, debug purposes
       reducer(),
-      shareReplay(1)
+      shareReplay(1),
     );
   }
 
@@ -26,16 +26,21 @@ export class DocumentState {
   dispatch(action) {
     this.actions.next(action);
   }
+
+  register(modules) {
+    modules.forEach(module => new module(this));
+  }
 }
 
 const reducer = () =>
   scan((state, action) => {
     let next;
     switch (action.type) {
-      case 'SET':
-        next = action.payload;
+      case 'DOCUMENT_SELECTED':
+        next = { ...action.payload };
         break;
-      case 'UPDATE':
+      case 'DOCUMENT_LOADED':
+      case 'DOCUMENT_UPDATED':
         next = { ...state, ...action.payload };
         break;
       default:
@@ -49,5 +54,5 @@ const reducer = () =>
 const select = path =>
   pipe(
     map(state => get(state, path, null)),
-    distinctUntilChanged(isEqual)
+    distinctUntilChanged(isEqual),
   );

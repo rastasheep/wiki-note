@@ -1,11 +1,25 @@
 import Editor from './editor';
-import { DocumentState, Action } from './document/docuemnt.state';
+import { DocumentState, Action } from './document/document.state';
+import DocumentStorage from './document/document.storage';
+import MemoryStorage from './storage/memory.storage';
 
-const store = new DocumentState();
+DocumentStorage.storageDriver = () => new MemoryStorage();
 
-new Editor('#quill-container').focus();
+const docState = new DocumentState();
 
-store.dispatch(new Action('SET', { title: location.hash }));
-window.addEventListener('hashchange', () => {
-  store.dispatch(new Action('UPDATE', { title: location.hash }));
-}, false);
+docState.register([
+  DocumentStorage
+  //   HashListener
+]);
+
+new Editor(docState, '#quill-container').focus();
+
+// HashListener
+docState.dispatch(new Action('DOCUMENT_SELECTED', { title: location.hash }));
+window.addEventListener(
+  'hashchange',
+  () => {
+    docState.dispatch(new Action('DOCUMENT_SELECTED', { title: location.hash }));
+  },
+  false
+);

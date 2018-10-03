@@ -22,7 +22,10 @@ class AutoLink extends Module {
       this.constructor.isWhitespace(delta.ops[1].insert)
     ) {
       const endRetain = delta.ops[0].retain;
-      const match = this.quill.getText().substr(0, endRetain).match(regex);
+      const match = this.quill
+        .getText()
+        .substr(0, endRetain)
+        .match(regex);
 
       if (!match) {
         return;
@@ -34,10 +37,7 @@ class AutoLink extends Module {
         ops.push({ retain: endRetain - url.length });
       }
 
-      ops.push(
-        { delete: url.length },
-        { insert: url, attributes: { link: url } },
-      );
+      ops.push({ delete: url.length }, { insert: url, attributes: { link: url } });
 
       this.quill.updateContents({ ops });
     }
@@ -47,7 +47,7 @@ class AutoLink extends Module {
     const { data } = node;
     const regex = /https?:\/\/[^\s]+/g;
 
-    if (typeof (data) !== 'string') {
+    if (typeof data !== 'string') {
       return;
     }
     const matches = data.match(regex);
@@ -55,7 +55,7 @@ class AutoLink extends Module {
     if (matches && matches.length > 0) {
       const ops = [];
       let str = data;
-      matches.forEach((match) => {
+      matches.forEach(match => {
         var split = str.split(match);
         var beforeLink = split.shift();
         ops.push({ insert: beforeLink });
