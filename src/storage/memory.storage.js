@@ -10,6 +10,10 @@ class MemoryStorage {
   set(key, value) {
     return (this.storage[key] = value);
   }
+
+  getKeys() {
+    return Object.keys(this.storage);
+  }
 }
 
 export default MemoryStorage;

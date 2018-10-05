@@ -23,6 +23,7 @@ class Editor {
     this.docState.actions.subscribe(action => {
       switch (action.type) {
         case 'DOCUMENT_LOADED':
+          this.instance.enable(!action.payload.readOnly);
           this.instance.setContents(action.payload.document);
           break;
       }
