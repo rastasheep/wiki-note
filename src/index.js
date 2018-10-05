@@ -15,11 +15,11 @@ docState.register([
 new Editor(docState, '#quill-container').focus();
 
 // HashListener
-docState.dispatch(new Action('DOCUMENT_SELECTED', { title: location.hash }));
+docState.dispatch(new Action('DOCUMENT_SELECTED', { title: location.hash || '#' }));
 window.addEventListener(
   'hashchange',
   () => {
-    docState.dispatch(new Action('DOCUMENT_SELECTED', { title: location.hash }));
+    docState.dispatch(new Action('DOCUMENT_SELECTED', { title: location.hash || '#' }));
   },
   false
 );

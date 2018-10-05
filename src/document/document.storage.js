@@ -54,9 +54,11 @@ class DocumentStorage {
     ];
 
     for (var key in groupedTitles) {
-      document.push(
-        ...[{ insert: key.toUpperCase() }, { attributes: { bold: true }, insert: '\n' }],
-      );
+      if (key !== 'undefined') {
+        document.push(
+          ...[{ insert: key.toUpperCase() }, { attributes: { bold: true }, insert: '\n' }],
+        );
+      }
 
       groupedTitles[key].forEach(title =>
         document.push({ attributes: { link: title }, insert: `${title}\n` }),
