@@ -1,11 +1,12 @@
-import {  Action } from '../document/document.state';
+import { Action } from '../document/document.state';
 
 class HashListener {
   constructor(state) {
     this.state = state;
+    this.window = window;
 
     this._onDocumentSelected(window.location.hash);
-    window.addEventListener('hashchange', this._onHashChange.bind(this));
+    this.window.addEventListener('hashchange', this._onHashChange.bind(this));
   }
 
   _onHashChange(event) {
@@ -13,6 +14,7 @@ class HashListener {
   }
 
   _onDocumentSelected(title) {
+    this.window.document.title = `${title ? title + ' - ' : ''}WikiNote`;
     this.state.dispatch(new Action('DOCUMENT_SELECTED', { title: title || '#' }));
   }
 }
