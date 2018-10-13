@@ -17,9 +17,10 @@ Quill.register({
 class Editor {
   constructor(docState, selector) {
     this.docState = docState;
-    this.selector = selector;
+    this.element = window.document.querySelector(selector);
+    this.element.onclick = this.focus.bind(this);
 
-    this.instance = new Quill(this.selector, {
+    this.instance = new Quill(this.element, {
       theme: 'bubble',
       syntax: true,
       modules: {
@@ -42,7 +43,6 @@ class Editor {
       }
     });
 
-
     this.instance.on('text-change', debounce(this.onTextChange.bind(this), 500));
   }
 
@@ -60,6 +60,9 @@ class Editor {
   }
 
   focus() {
+    if (this.instance.hasFocus()) {
+      return;
+    }
     this.instance.focus();
   }
 }
