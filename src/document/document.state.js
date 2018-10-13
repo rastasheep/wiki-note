@@ -37,7 +37,16 @@ const reducer = () =>
     let next;
     switch (action.type) {
       case 'DOCUMENT_SELECTED':
-        next = { ...action.payload };
+        let history;
+        if (state.history && state.history[1] === action.payload.title) { // back action
+          history = state.history.slice(1)
+        } else {
+          history = [action.payload.title].concat(state.history || []).slice(0, 10);
+        }
+        next = {
+          ...action.payload,
+          history,
+        };
         break;
       case 'DOCUMENT_LOADED':
       case 'DOCUMENT_UPDATED':
