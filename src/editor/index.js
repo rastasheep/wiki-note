@@ -19,16 +19,6 @@ class Editor {
     this.docState = docState;
     this.selector = selector;
 
-    this.docState.select('title').subscribe(docTitle => (this.docTitle = docTitle));
-    this.docState.actions.subscribe(action => {
-      switch (action.type) {
-        case 'DOCUMENT_LOADED':
-          this.instance.enable(!action.payload.readOnly);
-          this.instance.setContents(action.payload.document);
-          break;
-      }
-    });
-
     this.instance = new Quill(this.selector, {
       theme: 'bubble',
       syntax: true,
@@ -41,6 +31,17 @@ class Editor {
         ],
       },
     });
+
+    this.docState.select('title').subscribe(docTitle => (this.docTitle = docTitle));
+    this.docState.actions.subscribe(action => {
+      switch (action.type) {
+        case 'DOCUMENT_LOADED':
+          this.instance.enable(!action.payload.readOnly);
+          this.instance.setContents(action.payload.document);
+          break;
+      }
+    });
+
 
     this.instance.on('text-change', debounce(this.onTextChange.bind(this), 500));
   }
