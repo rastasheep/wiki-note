@@ -1,10 +1,12 @@
-import { Action } from '../document/document.state';
+import { LitElement } from '@polymer/lit-element';
 
-class HashListener {
-  constructor(state) {
-    this.state = state;
+class HashListener extends LitElement {
+  constructor() {
+    super();
     this.window = window;
+  }
 
+  firstUpdated() {
     this._onDocumentSelected(window.location.hash);
     this.window.addEventListener('hashchange', this._onHashChange.bind(this));
   }
@@ -15,7 +17,7 @@ class HashListener {
 
   _onDocumentSelected(title) {
     this.window.document.title = `${title ? title + ' - ' : ''}WikiNote`;
-    this.state.dispatch(new Action('DOCUMENT_SELECTED', { title: title || '#' }));
+    this.dispatchEvent(new CustomEvent('hashchange', { detail: { title: title || '#' } }));
   }
 }
 

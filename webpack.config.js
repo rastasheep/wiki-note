@@ -5,18 +5,18 @@ const mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
   mode,
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: path.resolve(__dirname, 'app/index.js'),
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
   },
   devtool: mode === 'development' ? 'eval' : 'source-map',
   devServer: {
-    contentBase: './dist',
+    contentBase: './build',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/index.html.ejs')
+      template: path.join(__dirname, 'app/index.html.ejs')
     }),
   ],
   resolve: {

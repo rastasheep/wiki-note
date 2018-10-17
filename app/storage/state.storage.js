@@ -1,7 +1,7 @@
 import { groupBy } from 'lodash-es';
-import { Action } from './document.state';
+import { Action } from '../app.state';
 
-class DocumentStorage {
+class StateStorage {
   static storageDriver() {
     // TODO: do we need default storage driver? memory storage?
   }
@@ -67,8 +67,8 @@ class DocumentStorage {
       document.push({ insert: '\n' });
     }
 
-    return document;
+    return { ops: document };
   }
 }
 
-export default DocumentStorage;
+export default StateStorage;

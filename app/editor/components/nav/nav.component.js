@@ -1,21 +1,21 @@
-import {LitElement, html} from '@polymer/lit-element';
+import { LitElement, html } from '@polymer/lit-element';
 
 class NavElement extends LitElement {
   constructor() {
     super();
+    this.history = [];
   }
+
   static get properties() {
     return {
       history: Array,
-    }
-  }
-
-  firstUpdated() {
-    this.backButton = this.shadowRoot.querySelector('#backButton');
+    };
   }
 
   render() {
-    const backEnabled = this.history.length > 1;
+    const backEnabled = this.history && this.history.length > 1;
+    const backDest = backEnabled ? this.history[1] : '';
+    const backClass = backEnabled ? '' : 'nav__item--disabled';
     return html`
       <style>
         :host {
@@ -78,7 +78,7 @@ class NavElement extends LitElement {
         </a>
       </div>
       <div class="nav__secondary">
-        <a  id="backButton" href="${this.history[1] || ''}" class="nav__item ${backEnabled ? '' : 'nav__item--disabled'}">
+        <a href="${backDest}" class="nav__item ${backClass}">
           <svg viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
               <path d="M10 6 L3 14 10 22 M3 14 L18 14 C26 14 30 18 30 26"></path>
           </svg>

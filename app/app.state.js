@@ -38,12 +38,14 @@ const reducer = () =>
     switch (action.type) {
       case 'DOCUMENT_SELECTED':
         let history;
-        if (state.history && state.history[1] === action.payload.title) { // back action
-          history = state.history.slice(1)
+        if (state.history && state.history[1] === action.payload.title) {
+          // back action
+          history = state.history.slice(1);
         } else {
           history = [action.payload.title].concat(state.history || []).slice(0, 10);
         }
         next = {
+          ...state,
           ...action.payload,
           history,
         };
