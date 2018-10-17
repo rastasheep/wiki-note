@@ -3,9 +3,9 @@ import { DocumentState, Action } from './document/document.state';
 import DocumentStorage from './document/document.storage';
 import MemoryStorage from './storage/memory.storage';
 import HashListener from './page/hash-listener';
-import NavElement from './nav/nav.element';
+import NavComponent from './nav/nav.component';
 
-window.customElements.define('wn-nav', NavElement);
+window.customElements.define('wn-nav', NavComponent);
 
 DocumentStorage.storageDriver = () => new MemoryStorage();
 
