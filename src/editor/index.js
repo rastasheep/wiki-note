@@ -15,9 +15,9 @@ Quill.register({
 });
 
 class Editor {
-  constructor(docState, selector) {
+  constructor(docState, element) {
     this.docState = docState;
-    this.element = window.document.querySelector(selector);
+    this.element = element;
     this.element.onclick = this.focus.bind(this);
 
     this.instance = new Quill(this.element, {
