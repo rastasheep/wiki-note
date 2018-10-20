@@ -24,7 +24,6 @@ class NavElement extends LitElement {
           left: 0;
           right: 0;
           height: 48px;
-          z-index: 1;
           display: flex;
           min-width: 320px;
           align-items: center;

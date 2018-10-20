@@ -113,6 +113,7 @@ class QuillEditor extends LitElement {
     this.instance = new Quill(this.element, {
       theme: 'bubble',
       syntax: true,
+      scrollingContainer: '#scrolling-container',
       modules: {
         clickableLink: true,
         autoLink: true,
