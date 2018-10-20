@@ -5,7 +5,7 @@ import Quill from 'quill/core';
 import { IndentClass as Indent } from 'quill/formats/indent';
 import Blockquote from 'quill/formats/blockquote';
 import Header from 'quill/formats/header';
-import List from 'quill/formats/list';
+import List, { ListItem } from 'quill/formats/list';
 import { BackgroundClass, BackgroundStyle } from 'quill/formats/background';
 import { ColorClass, ColorStyle } from 'quill/formats/color';
 import { FontClass, FontStyle } from 'quill/formats/font';
@@ -24,7 +24,9 @@ import Tooltip from 'quill/ui/tooltip';
 
 import AutoLink from './modules/auto-link';
 import ClickableLinks from './modules/clickable-links';
+import MarkdownShortcuts from './modules/markdown-shortcuts';
 import Link from './formats/link';
+import HorizontalRule from './formats/hr';
 import BubbleTheme from './themes/bubble';
 import Icons from './themes/icons';
 
@@ -49,6 +51,7 @@ Quill.register(
     'formats/code-block': CodeBlock,
     'formats/header': Header,
     'formats/list': List,
+    'formats/list/item': ListItem,
     'formats/bold': Bold,
     'formats/code': InlineCode,
     'formats/italic': Italic,
@@ -72,8 +75,10 @@ Quill.register(
 
 Quill.register({
   'formats/link': Link,
+  'formats/horizontal': HorizontalRule,
   'modules/clickableLink': ClickableLinks,
   'modules/autoLink': AutoLink,
+  'modules/markdownShortcuts': MarkdownShortcuts,
 });
 
 class QuillEditor extends LitElement {
@@ -111,6 +116,7 @@ class QuillEditor extends LitElement {
       modules: {
         clickableLink: true,
         autoLink: true,
+        markdownShortcuts: true,
       },
     });
 
