@@ -1,12 +1,74 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { debounce, xorWith, isEqual } from 'lodash-es';
-import Quill from 'quill';
+import Quill from 'quill/core';
+
+import { IndentClass as Indent } from 'quill/formats/indent';
+import Blockquote from 'quill/formats/blockquote';
+import Header from 'quill/formats/header';
+import List from 'quill/formats/list';
+import { BackgroundClass, BackgroundStyle } from 'quill/formats/background';
+import { ColorClass, ColorStyle } from 'quill/formats/color';
+import { FontClass, FontStyle } from 'quill/formats/font';
+import { SizeClass, SizeStyle } from 'quill/formats/size';
+import Bold from 'quill/formats/bold';
+import Italic from 'quill/formats/italic';
+import Script from 'quill/formats/script';
+import Strike from 'quill/formats/strike';
+import Underline from 'quill/formats/underline';
+import Image from 'quill/formats/image';
+import Video from 'quill/formats/video';
+import CodeBlock, { Code as InlineCode } from 'quill/formats/code';
+import Formula from 'quill/modules/formula';
+import Toolbar from 'quill/modules/toolbar';
+import Tooltip from 'quill/ui/tooltip';
 
 import AutoLink from './modules/auto-link';
 import ClickableLinks from './modules/clickable-links';
 import Link from './formats/link';
+import BubbleTheme from './themes/bubble';
+import Icons from './themes/icons';
 
-import 'quill/dist/quill.bubble.css';
+Quill.register(
+  {
+    'attributors/class/background': BackgroundClass,
+    'attributors/class/color': ColorClass,
+    'attributors/class/font': FontClass,
+    'attributors/class/size': SizeClass,
+
+    'attributors/style/background': BackgroundStyle,
+    'attributors/style/color': ColorStyle,
+    'attributors/style/font': FontStyle,
+    'attributors/style/size': SizeStyle,
+
+    'formats/indent': Indent,
+    'formats/background': BackgroundStyle,
+    'formats/color': ColorStyle,
+    'formats/font': FontClass,
+    'formats/size': SizeClass,
+    'formats/blockquote': Blockquote,
+    'formats/code-block': CodeBlock,
+    'formats/header': Header,
+    'formats/list': List,
+    'formats/bold': Bold,
+    'formats/code': InlineCode,
+    'formats/italic': Italic,
+    'formats/script': Script,
+    'formats/strike': Strike,
+    'formats/underline': Underline,
+    'formats/image': Image,
+    'formats/video': Video,
+
+    'modules/formula': Formula,
+    'modules/toolbar': Toolbar,
+
+    'themes/bubble': BubbleTheme,
+
+    'ui/icons': Icons,
+    'ui/tooltip': Tooltip,
+  },
+  true,
+);
+
 
 Quill.register({
   'formats/link': Link,
@@ -49,10 +111,6 @@ class QuillEditor extends LitElement {
       modules: {
         clickableLink: true,
         autoLink: true,
-        toolbar: [
-          ['bold', 'italic', 'link'],
-          [{ header: 1 }, { header: 2 }, 'blockquote', 'code-block'],
-        ],
       },
     });
 
