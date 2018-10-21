@@ -15,29 +15,36 @@ class StateStorage {
 
   observeState(actions) {
     actions.subscribe(action => {
+      let document;
+      const title = action.payload.title;
+
       switch (action.type) {
         case 'DOCUMENT_SELECTED':
-          const title = action.payload.title;
-
-          let document;
-          let readOnly = false;
           if (title === '#index') {
             document = this._loadIndexDocument();
-            readOnly = true;
           } else {
-            document = this.storageDriver.get(action.payload.title);
+            document = this.storageDriver.get(title);
           }
 
           this.documentState.dispatch(
             new Action('DOCUMENT_LOADED', {
-              title: action.payload.title,
-              readOnly,
-              document,
+              ...{
+                title,
+                readOnly: false,
+                starred: false,
+                content: [],
+              },
+              ...document,
             }),
           );
           break;
         case 'DOCUMENT_UPDATED':
-          this.storageDriver.set(action.payload.title, action.payload.document);
+          document = {
+            ...action.payload,
+            updatedAt: Date.now(),
+          };
+
+          this.storageDriver.set(title, document);
           break;
       }
     });
@@ -47,7 +54,7 @@ class StateStorage {
     const titles = this.storageDriver.getKeys().sort();
     const groupedTitles = groupBy(titles, item => item[1]);
 
-    const document = [
+    const ops = [
       { attributes: { bold: true }, insert: 'INDEX' },
       { attributes: { blockquote: true }, insert: '\n' },
       { insert: '\n' },
@@ -55,19 +62,21 @@ class StateStorage {
 
     for (var key in groupedTitles) {
       if (key !== 'undefined') {
-        document.push(
-          ...[{ insert: key.toUpperCase() }, { attributes: { bold: true }, insert: '\n' }],
-        );
+        ops.push(...[{ insert: key.toUpperCase() }, { attributes: { bold: true }, insert: '\n' }]);
       }
 
       groupedTitles[key].forEach(title =>
-        document.push({ attributes: { link: title }, insert: `${title}\n` }),
+        ops.push({ attributes: { link: title }, insert: `${title}\n` }),
       );
 
-      document.push({ insert: '\n' });
+      ops.push({ insert: '\n' });
     }
 
-    return { ops: document };
+    return {
+      title: '#index',
+      readOnly: true,
+      content: { ops },
+    };
   }
 }
 

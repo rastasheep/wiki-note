@@ -14,7 +14,7 @@ class EditorComponent extends LitElement {
     return {
       state: Object,
       readOnly: Boolean,
-      document: Array,
+      content: Array,
       history: Array,
     };
   }
@@ -25,7 +25,7 @@ class EditorComponent extends LitElement {
     this.state.select('history').subscribe(history => (this.history = history));
     this.state.select('title').subscribe(title => (this.title = title));
     this.state.select('readOnly').subscribe(readOnly => (this.readOnly = readOnly));
-    this.state.select('document').subscribe(document => (this.document = document));
+    this.state.select('content').subscribe(content => (this.content = content));
   }
 
   createRenderRoot() {
@@ -40,11 +40,11 @@ class EditorComponent extends LitElement {
     );
   }
 
-  _onDocumentUpdate(event) {
+  _onContentUpdate(event) {
     this.state.dispatch(
       new Action('DOCUMENT_UPDATED', {
         title: this.title,
-        document: event.detail.document,
+        content: event.detail.content,
       }),
     );
   }
@@ -59,8 +59,8 @@ class EditorComponent extends LitElement {
 
       <wn-quill-editor
         .readOnly="${this.readOnly}"
-        .document="${this.document}"
-        @documentUpdate="${this._onDocumentUpdate.bind(this)}">
+        .content="${this.content}"
+        @contentUpdate="${this._onContentUpdate.bind(this)}">
       </wn-quill-editor>
     `;
   }

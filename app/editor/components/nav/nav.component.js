@@ -31,6 +31,7 @@ class NavElement extends LitElement {
           color: rgb(140, 140, 140);
           user-select: none;
           background-color: #fff;
+          z-index: 1;
         }
 
         .nav__primary {

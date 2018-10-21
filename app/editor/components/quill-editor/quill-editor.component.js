@@ -72,7 +72,6 @@ Quill.register(
   true,
 );
 
-
 Quill.register({
   'formats/link': Link,
   'formats/horizontal': HorizontalRule,
@@ -85,7 +84,7 @@ class QuillEditor extends LitElement {
   static get properties() {
     return {
       readOnly: Boolean,
-      document: Array,
+      content: Array,
     };
   }
 
@@ -95,15 +94,14 @@ class QuillEditor extends LitElement {
     }
   }
 
-  set document(document) {
+  set content(content) {
     if (!this.instance) {
       return;
     }
 
-    if (
-      xorWith(document ? document.ops : [], this.instance.getContents().ops, isEqual).length > 0
-    ) {
-      this.instance.setContents(document);
+    if (xorWith(content ? content.ops : [], this.instance.getContents().ops, isEqual).length > 0) {
+      this.instance.setContents(content);
+      this.focus();
     }
   }
 
@@ -134,7 +132,7 @@ class QuillEditor extends LitElement {
     }
 
     this.dispatchEvent(
-      new CustomEvent('documentUpdate', { detail: { document: this.instance.getContents() } }),
+      new CustomEvent('contentUpdate', { detail: { content: this.instance.getContents() } }),
     );
   }
 
@@ -142,7 +140,9 @@ class QuillEditor extends LitElement {
     if (this.instance.hasFocus()) {
       return;
     }
-    this.instance.focus();
+    this.instance.setSelection(
+      this.instance.getLength()
+    );
   }
 
   render() {

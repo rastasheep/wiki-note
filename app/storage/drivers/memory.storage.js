@@ -4,7 +4,7 @@ class MemoryStorage {
   }
 
   get(key) {
-    return this.storage[key];
+    return this.storage[key] || {};
   }
 
   set(key, value) {
