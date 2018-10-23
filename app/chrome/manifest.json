@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "wiki-note",
+  "homepage_url": "https://github.com/rastasheep/wiki-note",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png",
+    "512": "icon512.png"
+  },
+  "permissions": ["tabs"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "browser_action": {
+    "default_icon": {
+      "16": "icon16-monochrome.png",
+      "19": "icon19-monochrome.png",
+      "32": "icon32-monochrome.png",
+      "38": "icon38-monochrome.png",
+      "64": "icon64-monochrome.png"
+    }
+  }
+}
