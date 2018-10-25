@@ -17,6 +17,12 @@ module.exports = {
   devtool: mode === 'development' ? 'eval' : 'source-map',
   devServer: {
     contentBase: './build/chrome',
+    proxy: [
+      {
+        context: ['**', '!favicon.ico'],
+        target: 'http://localhost:8080/chrome',
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
