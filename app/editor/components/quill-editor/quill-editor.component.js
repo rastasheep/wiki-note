@@ -136,13 +136,20 @@ class QuillEditor extends LitElement {
     );
   }
 
-  focus() {
+  focus(event) {
     if (this.instance.hasFocus()) {
       return;
     }
     this.instance.setSelection(
       this.instance.getLength()
     );
+  }
+
+  onEditorClick(event) {
+    if (vent.currentTarget.classList.contains('ql-bubble')) {
+      return;
+    }
+    this.focus();
   }
 
   render() {
@@ -170,7 +177,7 @@ class QuillEditor extends LitElement {
 
       <div id="scrolling-container">
         <div
-          @click="${this.focus.bind(this)}"
+          @click="${this.onEditorClick.bind(this)}"
           id="quill-container">
         </div>
       </div>
