@@ -1,7 +1,14 @@
 import AppComponent from '../app.component';
-import StateStorage from '../storage/state.storage';
 import LocalStorageStorage from '../storage/drivers/local-storage.storage';
 
-StateStorage.storageDriver = () => new LocalStorageStorage();
+class ChromeAppComponent extends AppComponent {
+  constructor() {
+    super();
 
-window.customElements.define('wn-app', AppComponent);
+    this.state.register([LocalStorageStorage]);
+  }
+}
+
+window.customElements.define('wn-app', ChromeAppComponent);
+
+export default ChromeAppComponent;

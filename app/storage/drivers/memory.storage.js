@@ -1,5 +1,8 @@
-class MemoryStorage {
-  constructor() {
+import StateStorage from './state.storage';
+
+class MemoryStorage extends StateStorage {
+  constructor(documentState) {
+    super(documentState);
     this.storage = {};
   }
 

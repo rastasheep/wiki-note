@@ -1,7 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 
 import { DocumentState } from './app.state';
-import StateStorage from './storage/state.storage';
 import EditorComponent from './editor/containers/editor/editor.component';
 
 window.customElements.define('wn-editor', EditorComponent);
@@ -11,7 +10,6 @@ class AppComponent extends LitElement {
     super();
 
     this.state = new DocumentState();
-    this.state.register([StateStorage]);
   }
 
   firstUpdated() {

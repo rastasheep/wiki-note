@@ -1,5 +1,8 @@
-class LocalStorageStorage {
-  constructor() {
+import StateStorage from './state.storage';
+
+class LocalStorageStorage extends StateStorage {
+  constructor(documentState) {
+    super(documentState);
     this.prefix = 'wn:';
     this.storage = window.localStorage;
   }
