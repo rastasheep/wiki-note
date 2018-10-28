@@ -17,6 +17,10 @@ class LocalStorageStorage extends StateStorage {
     return this.storage.setItem(this._computeKey(store, key), JSON.stringify(value));
   }
 
+  unset(store, key) {
+    return this.storage.removeItem(this._computeKey(store, key));
+  }
+
   pick(store, keys) {
     const storeKey = this._computeKey(store);
     return Object.keys(this.storage)

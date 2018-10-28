@@ -39,6 +39,15 @@ class IndexedDbStorage extends StateStorage {
     });
   }
 
+  unset(store, key) {
+    return this.db.then(db => {
+      return db
+        .transaction(store, 'readwrite')
+        .objectStore(store)
+        .delete(key).complete;
+    });
+  }
+
   pick(store, keys) {
     const result = [];
     return this.db.then(db => {

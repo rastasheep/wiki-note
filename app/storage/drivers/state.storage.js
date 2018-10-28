@@ -15,6 +15,10 @@ class StateStorage {
     throw new Error('Not Implemented');
   }
 
+  unset(store, key) {
+    throw new Error('Not Implemented');
+  }
+
   pick(store, keys) {
     throw new Error('Not Implemented');
   }
@@ -35,11 +39,11 @@ class StateStorage {
           readOnly: false,
           starred: false,
           content: [],
-        }
+        };
 
         this.documentState.dispatch(
           new Action('DOCUMENT_LOADED', {
-            document: Object.assign({}, defaultDoc, document)
+            document: Object.assign({}, defaultDoc, document),
           }),
         );
         break;
@@ -47,7 +51,21 @@ class StateStorage {
         document = action.payload.document;
         document.updatedAt = Date.now();
 
-        this.set('documents', title, document);
+        if (
+          typeof document.content.length !== 'undefined' &&
+          (document.content.length < 1 || document.content.length() <= 1) &&
+          !document.starred
+        ) {
+          this.documentState.dispatch(
+            new Action('DOCUMENT_DELETED', {
+              title: document.title,
+            }),
+          );
+          this.unset('documents', document.title);
+          break;
+        }
+
+        this.set('documents', document.title, document);
         break;
     }
   }
