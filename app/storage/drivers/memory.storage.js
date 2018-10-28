@@ -1,4 +1,4 @@
-import { set as _set, get as _get } from 'lodash-es';
+import { set as _set, get as _get, pick as _pick } from 'lodash-es';
 import StateStorage from './state.storage';
 
 class MemoryStorage extends StateStorage {
@@ -15,8 +15,9 @@ class MemoryStorage extends StateStorage {
     return _set(this.storage, [store, key], value);
   }
 
-  getKeys(store) {
-    return Object.keys(this.storage[store]);
+  pick(store, keys) {
+    const data = this.storage[store] || {};
+    return Object.keys(data).map((key) => _pick(data[key], keys));
   }
 }
 

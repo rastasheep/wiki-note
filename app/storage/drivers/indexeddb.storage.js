@@ -1,4 +1,5 @@
 import idb from 'idb';
+import { pick as _pick } from 'lodash-es';
 import StateStorage from './state.storage';
 
 class IndexedDbStorage extends StateStorage {
@@ -38,13 +39,18 @@ class IndexedDbStorage extends StateStorage {
     });
   }
 
-  getKeys(store, key) {
+  pick(store, keys) {
+    const result = [];
     return this.db.then(db => {
-      return db
-        .transaction(store, 'readonly')
-        .objectStore(store)
-        .index(key)
-        .getAllKeys();
+      const tx = db.transaction(store, 'readonly');
+
+      tx.objectStore(store).iterateCursor(cursor => {
+        if (!cursor) return;
+        result.push(_pick(cursor.value, keys));
+        cursor.continue();
+      });
+
+      return tx.complete.then(() => result);
     });
   }
 

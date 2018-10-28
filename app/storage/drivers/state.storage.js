@@ -15,7 +15,7 @@ class StateStorage {
     throw new Error('Not Implemented');
   }
 
-  getKeys(store, key) {
+  pick(store, keys) {
     throw new Error('Not Implemented');
   }
 
@@ -55,29 +55,39 @@ class StateStorage {
   }
 
   async _loadIndexDocument() {
-    const titles = await this.getKeys('documents', 'title');
-    const groupedTitles = groupBy(titles.sort(), item => item[1]);
+    const titles = await this.pick('documents', ['title', 'starred']);
+    const documents = groupBy(titles.sort(), item => item.title[1]);
+    const ops = [];
 
-    const ops = [
-      { attributes: { bold: true }, insert: 'INDEX' },
-      { attributes: { blockquote: true }, insert: '\n' },
-      { insert: '\n' },
-    ];
+    ops.push(
+      ...[
+        { attributes: { bold: true }, insert: 'INDEX' },
+        { attributes: { blockquote: true }, insert: '\n' },
+        { insert: '\n' },
+      ],
+    );
 
-    for (var key in groupedTitles) {
-      if (key !== 'undefined') {
-        ops.push(...[{ insert: key.toUpperCase() }, { attributes: { bold: true }, insert: '\n' }]);
+    for (var letter in documents) {
+      if (letter !== 'undefined') {
+        ops.push(
+          ...[{ insert: letter.toUpperCase() }, { attributes: { bold: true }, insert: '\n' }],
+        );
       }
 
-      groupedTitles[key].forEach(title =>
-        ops.push({ attributes: { link: title }, insert: `${title}\n` }),
-      );
+      documents[letter].forEach(document => {
+        const style = document.starred ? { background: '#ffa', color: '#555' } : undefined;
+        ops.push({
+          attributes: { link: document.title, ...style },
+          insert: `${document.title}\n`,
+        });
+      });
 
       ops.push({ insert: '\n' });
     }
 
     return {
       title: '#index',
+      starred: false,
       readOnly: true,
       content: { ops },
     };

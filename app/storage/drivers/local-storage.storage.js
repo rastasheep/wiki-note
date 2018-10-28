@@ -1,3 +1,4 @@
+import { pick as _pick } from 'lodash-es';
 import StateStorage from './state.storage';
 
 class LocalStorageStorage extends StateStorage {
@@ -16,11 +17,11 @@ class LocalStorageStorage extends StateStorage {
     return this.storage.setItem(this._computeKey(store, key), JSON.stringify(value));
   }
 
-  getKeys(store) {
+  pick(store, keys) {
     const storeKey = this._computeKey(store);
     return Object.keys(this.storage)
       .filter(key => key.startsWith(storeKey))
-      .map(key => key.slice(storeKey.length + 1));
+      .map(key => _pick(JSON.parse(this.storage.getItem(key)), keys));
   }
 
   _computeKey(store, key) {

@@ -4,18 +4,26 @@ class NavElement extends LitElement {
   constructor() {
     super();
     this.history = [];
+    this.isStarred = false;
   }
 
   static get properties() {
     return {
       history: Array,
+      isStarred: Boolean,
     };
+  }
+
+  onStarClick(event) {
+    this.isStarred = !this.isStarred;
+    this.dispatchEvent(new CustomEvent('starToggle', { detail: { isStarred: this.isStarred } }));
   }
 
   render() {
     const backEnabled = this.history && this.history.length > 1;
     const backDest = backEnabled ? this.history[1] : '';
     const backClass = backEnabled ? '' : 'nav__item--disabled';
+    const starClass = this.isStarred ? 'nav__item--active' : '';
     return html`
       <style>
         :host {
@@ -63,6 +71,10 @@ class NavElement extends LitElement {
           pointer-events: none;
           opacity: .5;
         }
+
+        .nav__item--active svg {
+          fill: #ffa;
+        }
       </style>
 
       <div class="nav__primary">
@@ -83,7 +95,9 @@ class NavElement extends LitElement {
               <path d="M10 6 L3 14 10 22 M3 14 L18 14 C26 14 30 18 30 26"></path>
           </svg>
         </a>
-        <a class="nav__item nav__item--disabled">
+        <a
+          class="nav__item ${starClass}"
+          @click="${this.onStarClick.bind(this)}">
           <svg viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
               <path d="M16 2 L20 12 30 12 22 19 25 30 16 23 7 30 10 19 2 12 12 12 Z"></path>
           </svg>
