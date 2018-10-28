@@ -15,7 +15,7 @@ class AutoLink extends Module {
   }
 
   onTextChange(delta, oldDelta, source) {
-    const regex = /https?:\/\/[^\s]+$|\#\w+$/;
+    const regex = /https?:\/\/[^\s]+$|\#[A-Za-z0-9_-]+$/;
     if (
       delta.ops.length === 2 &&
       delta.ops[0].retain &&
