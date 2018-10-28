@@ -10,11 +10,15 @@ window.customElements.define('wn-hash-listener', HashListenerComponent);
 window.customElements.define('wn-quill-editor', QuillEditorComponent);
 
 class EditorComponent extends LitElement {
+  constructor() {
+    super();
+    this.document = {};
+    this.history = [];
+  }
   static get properties() {
     return {
       state: Object,
-      readOnly: Boolean,
-      content: Array,
+      document: Object,
       history: Array,
     };
   }
@@ -23,10 +27,7 @@ class EditorComponent extends LitElement {
     this.nav = this.querySelector('wn-nav');
 
     this.state.select('history').subscribe(history => (this.history = history));
-    this.state.select('title').subscribe(title => (this.title = title));
-    this.state.select('readOnly').subscribe(readOnly => (this.readOnly = readOnly));
-    this.state.select('starred').subscribe(starred => (this.starred = starred));
-    this.state.select('content').subscribe(content => (this.content = content));
+    this.state.select('document').subscribe(document => (this.document = document || {}));
   }
 
   createRenderRoot() {
@@ -42,17 +43,19 @@ class EditorComponent extends LitElement {
   }
 
   _onDocumentUpdated(event) {
-    if (this.readOnly) {
+    if (this.document.readOnly) {
       return;
     }
     const doc = event.detail;
 
     this.state.dispatch(
       new Action('DOCUMENT_UPDATED', {
-        title: doc.title || this.title,
-        readOnly: doc.readOnly || this.readOnly,
-        starred: typeof doc.isStarred !== 'undefined' ? doc.isStarred : this.starred,
-        content: doc.content || this.content,
+        document: {
+          title: doc.title || this.document.title,
+          readOnly: doc.readOnly || this.document.readOnly,
+          starred: typeof doc.isStarred !== 'undefined' ? doc.isStarred : this.document.starred,
+          content: doc.content || this.document.content,
+        },
       }),
     );
   }
@@ -61,7 +64,7 @@ class EditorComponent extends LitElement {
     return html`
       <wn-nav
         .history="${this.history}"
-        .isStarred="${this.starred}"
+        .isStarred="${this.document.starred}"
         @starToggle="${this._onDocumentUpdated.bind(this)}">
       </wn-nav>
 
@@ -70,8 +73,8 @@ class EditorComponent extends LitElement {
       </wn-hash-listener>
 
       <wn-quill-editor
-        .readOnly="${this.readOnly}"
-        .content="${this.content}"
+        .readOnly="${this.document.readOnly}"
+        .content="${this.document.content}"
         @contentUpdate="${this._onDocumentUpdated.bind(this)}">
       </wn-quill-editor>
     `;

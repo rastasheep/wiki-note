@@ -30,24 +30,22 @@ class StateStorage {
         } else {
           document = await this.get('documents', title);
         }
+        const defaultDoc = {
+          title,
+          readOnly: false,
+          starred: false,
+          content: [],
+        }
 
         this.documentState.dispatch(
           new Action('DOCUMENT_LOADED', {
-            ...{
-              title,
-              readOnly: false,
-              starred: false,
-              content: [],
-            },
-            ...document,
+            document: Object.assign({}, defaultDoc, document)
           }),
         );
         break;
       case 'DOCUMENT_UPDATED':
-        document = {
-          ...action.payload,
-          updatedAt: Date.now(),
-        };
+        document = action.payload.document;
+        document.updatedAt = Date.now();
 
         this.set('documents', title, document);
         break;
