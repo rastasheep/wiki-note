@@ -101,7 +101,7 @@ class QuillEditor extends LitElement {
 
     if (xorWith(content ? content.ops : [], this.instance.getContents().ops, isEqual).length > 0) {
       this.instance.setContents(content);
-      this.focus();
+      this.focus(true);
     }
   }
 
@@ -136,8 +136,8 @@ class QuillEditor extends LitElement {
     );
   }
 
-  focus(event) {
-    if (this.instance.hasFocus()) {
+  focus(force = false) {
+    if (this.instance.hasFocus() && !force) {
       return;
     }
     this.instance.setSelection(
@@ -146,7 +146,7 @@ class QuillEditor extends LitElement {
   }
 
   onEditorClick(event) {
-    if (vent.currentTarget.classList.contains('ql-bubble')) {
+    if (event.currentTarget.classList.contains('ql-bubble')) {
       return;
     }
     this.focus();

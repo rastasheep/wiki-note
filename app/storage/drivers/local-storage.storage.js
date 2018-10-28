@@ -3,27 +3,28 @@ import StateStorage from './state.storage';
 class LocalStorageStorage extends StateStorage {
   constructor(documentState) {
     super(documentState);
-    this.prefix = 'wn:';
+    this.prefix = 'wn';
     this.storage = window.localStorage;
   }
 
-  get(key) {
-    const value = this.storage.getItem(this._computeKey(key));
+  get(store, key) {
+    const value = this.storage.getItem(this._computeKey(store, key));
     return JSON.parse(value) || {};
   }
 
-  set(key, value) {
-    return this.storage.setItem(this._computeKey(key), JSON.stringify(value));
+  set(store, key, value) {
+    return this.storage.setItem(this._computeKey(store, key), JSON.stringify(value));
   }
 
-  getKeys() {
+  getKeys(store) {
+    const storeKey = this._computeKey(store);
     return Object.keys(this.storage)
-      .filter(key => key.startsWith(this.prefix))
-      .map(key => key.slice(this.prefix.length));
+      .filter(key => key.startsWith(storeKey))
+      .map(key => key.slice(storeKey.length + 1));
   }
 
-  _computeKey(key) {
-    return `${this.prefix}${key}`;
+  _computeKey(store, key) {
+    return key ? `${this.prefix}:${store}:${key}` : `${this.prefix}:${store}`;
   }
 }
 

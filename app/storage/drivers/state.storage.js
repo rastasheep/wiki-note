@@ -7,28 +7,28 @@ class StateStorage {
     this.documentState.actions.subscribe(this._onStateChange.bind(this));
   }
 
-  get() {
+  get(store, key) {
     throw new Error('Not Implemented');
   }
 
-  set() {
+  set(store, key, value) {
     throw new Error('Not Implemented');
   }
 
-  getKeys() {
+  getKeys(store, key) {
     throw new Error('Not Implemented');
   }
 
-  _onStateChange(action) {
+  async _onStateChange(action) {
     let document;
     const title = action.payload.title;
 
     switch (action.type) {
       case 'DOCUMENT_SELECTED':
         if (title === '#index') {
-          document = this._loadIndexDocument();
+          document = await this._loadIndexDocument();
         } else {
-          document = this.get(title);
+          document = await this.get('documents', title);
         }
 
         this.documentState.dispatch(
@@ -49,14 +49,14 @@ class StateStorage {
           updatedAt: Date.now(),
         };
 
-        this.set(title, document);
+        this.set('documents', title, document);
         break;
     }
   }
 
-  _loadIndexDocument() {
-    const titles = this.getKeys().sort();
-    const groupedTitles = groupBy(titles, item => item[1]);
+  async _loadIndexDocument() {
+    const titles = await this.getKeys('documents', 'title');
+    const groupedTitles = groupBy(titles.sort(), item => item[1]);
 
     const ops = [
       { attributes: { bold: true }, insert: 'INDEX' },

@@ -1,3 +1,4 @@
+import { set as _set, get as _get } from 'lodash-es';
 import StateStorage from './state.storage';
 
 class MemoryStorage extends StateStorage {
@@ -6,16 +7,16 @@ class MemoryStorage extends StateStorage {
     this.storage = {};
   }
 
-  get(key) {
-    return this.storage[key] || {};
+  get(store, key) {
+    return _get(this.storage, [store, key], {});
   }
 
-  set(key, value) {
-    return (this.storage[key] = value);
+  set(store, key, value) {
+    return _set(this.storage, [store, key], value);
   }
 
-  getKeys() {
-    return Object.keys(this.storage);
+  getKeys(store) {
+    return Object.keys(this.storage[store]);
   }
 }
 

@@ -19,7 +19,7 @@ module.exports = {
     contentBase: './build/chrome',
     proxy: [
       {
-        context: ['**', '!favicon.ico'],
+        context: ['**', '!/favicon.ico'],
         target: 'http://localhost:8080/chrome',
       },
     ],
