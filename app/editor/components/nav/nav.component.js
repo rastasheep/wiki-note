@@ -22,7 +22,9 @@ class NavElement extends LitElement {
   onNewPageClick(event) {
     event.preventDefault();
     const pageTitle = window.prompt('Enter document name', 'index');
-    window.location.hash = `#${pageTitle}`;
+    if (pageTitle) {
+      window.location.hash = `#${pageTitle}`;
+    }
   }
 
   render() {
