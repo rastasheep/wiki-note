@@ -19,6 +19,12 @@ class NavElement extends LitElement {
     this.dispatchEvent(new CustomEvent('starToggle', { detail: { isStarred: this.isStarred } }));
   }
 
+  onNewPageClick(event) {
+    event.preventDefault();
+    const pageTitle = window.prompt('Enter document name', 'index');
+    window.location.hash = `#${pageTitle}`;
+  }
+
   render() {
     const backEnabled = this.history && this.history.length > 1;
     const backDest = backEnabled ? this.history[1] : '';
@@ -86,6 +92,14 @@ class NavElement extends LitElement {
         <a href="#index" class="nav__item">
           <svg viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
               <path d="M6 2 L26 2 26 30 16 20 6 30 Z"></path>
+          </svg>
+        </a>
+        <a
+          href="#index"
+          @click="${this.onNewPageClick.bind(this)}"
+          class="nav__item">
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+            <path d="M16 2 L16 30 M2 16 L30 16" />
           </svg>
         </a>
       </div>
