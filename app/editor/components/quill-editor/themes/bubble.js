@@ -5,7 +5,7 @@ import icons from './icons';
 
 const TOOLBAR_CONFIG = [
   ['bold', 'italic', 'link'],
-  [{ header: 1 }, { header: 2 }, 'blockquote', 'code-block'],
+  [{ header: 1 }, { header: 2 }, 'blockquote', 'code-block', 'clean'],
 ];
 
 class BubbleTheme extends BaseTheme {

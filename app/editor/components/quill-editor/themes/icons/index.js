@@ -8,4 +8,5 @@ module.exports = {
   },
   'blockquote': require('./blockquote.svg'),
   'code-block': require('./code.svg'),
+  'clean': require('./clean.svg'),
 };
